@@ -8,7 +8,7 @@ export default function Chat() {
           How can I help you today?
         </div>
         <div className="dark:text-slate-300 text-slate-900">
-          ChatGPT can make mistakes. Consider checking important information.
+          {process.env.APP_NAME} can make mistakes. Consider checking important information.
         </div>
       </div>
       <div className="mt-5 bottom-0 sticky pb-8 pt-1 bg-background">

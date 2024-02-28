@@ -8,7 +8,7 @@ import "./globals.css";
 const font = Space_Grotesk({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
-  title: "OpenChat",
+  title: "ChainBot",
   description: "An OpenAI based chat system",
 };
 
