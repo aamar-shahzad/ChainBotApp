@@ -40,7 +40,7 @@ export default function ChatInput() {
       <Input
         autoComplete="off"
         name="message"
-        placeholder="Ask me something..."
+        placeholder="Ask me something about transaction in blockchain network..."
         className="h-12"
       />
       <Submit />
