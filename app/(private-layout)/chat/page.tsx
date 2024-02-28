@@ -5,7 +5,7 @@ export default function Chat() {
     <div className="grow">
       <div className="flex flex-col items-start gap-4 pb-10 min-h-[75vh] sm:w-[95%]">
         <div className="text-xl font-medium dark:text-sky-200 text-sky-700">
-          How can I help you today?
+          How can I help you to expolore blockchain?
         </div>
         <div className="dark:text-slate-300 text-slate-900">
           {process.env.APP_NAME} can make mistakes. Consider checking important information.
