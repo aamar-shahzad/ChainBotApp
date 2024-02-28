@@ -28,17 +28,17 @@ export default function UserApi() {
   return (
     <>
       <div className="grid w-full items-center gap-1.5">
-        <Label htmlFor="api">OpneAI Key</Label>
+        {/* <Label htmlFor="api">OpneAI Key</Label>
         <Input
           id="api"
           value={apiKey}
           onChange={(e) => setApiKey(e.target.value)}
-        />
+        /> */}
       </div>
       <div className="flex flex-row items-center gap-2">
-        <Button className="w-24" onClick={handleSave}>
+        {/* <Button className="w-24" onClick={handleSave}>
           Save
-        </Button>
+        </Button> */}
         <SignOutButton />
       </div>
     </>
