@@ -5,15 +5,14 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center gap-5 justify-center h-[70vh]">
       <h3 className="text-4xl font-bold text-center">
-        Welcome to {process.env.APP_NAME}! Your Gateway to Intelligent Conversations, Powered
-        by OpenAPI
+        Welcome to {process.env.APP_NAME}! Your Gateway to Intelligent Conversations with blockchain
       </h3>
-      <p className="sm:w-[75%] mx-auto text-center text-muted-foreground ">
+      {/* <p className="sm:w-[75%] mx-auto text-center text-muted-foreground ">
         "{process.env.APP_NAME}" redefines the chat experience by seamlessly integrating the
         robust capabilities of the OpenAPI. This platform takes conversational
         AI to new heights, offering you a dynamic and intelligent chat companion
         designed for a wide array of applications.
-      </p>
+      </p> */}
       <Link href="/register" className={buttonVariants({ size: "lg" })}>
         Get started
       </Link>
