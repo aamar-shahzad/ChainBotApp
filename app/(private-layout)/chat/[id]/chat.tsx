@@ -1,6 +1,6 @@
 "use client";
 
-import { chat } from "@/actions/chat";
+import { chat,queryToCustom } from "@/actions/chat";
 import Submit from "@/components/submit";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -87,12 +87,12 @@ function ChatInput({ addMessage, id }: ConversationComponent) {
       inputRef.current.value = "";
     }
     addMessage(message);
-    const err = await chat({
-      apiKey,
-      conversationId: id,
-      message,
-    });
-
+    // const err = await chat({
+    //   apiKey,
+    //   conversationId: id,
+    //   message,
+    // });
+const err=await queryToCustom({inputs:message});
     if (err?.message) {
       toast({
         title: err.message,
