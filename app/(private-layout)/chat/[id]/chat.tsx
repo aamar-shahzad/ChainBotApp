@@ -32,7 +32,6 @@ export default function Chat({ messages, id }: ChatProps) {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [optimisticMessages]);
-console.log(optimisticMessages);
   return (
     <div className="grow">
       <div className="flex flex-col items-start gap-12 pb-10 min-h-[75vh] sm:w-[95%]">
@@ -84,7 +83,6 @@ function ChatInput({ addMessage, id }: ConversationComponent) {
       conversationId: id,
       message,
     });
-// const err=await queryToCustom({inputs:message});
     if (err?.message) {
       toast({
         title: err.message,

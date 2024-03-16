@@ -22,6 +22,7 @@ export async function newChat(params: NewMessage) {
   let error: undefined | { message: string };
   try {
     const responseMessage = await createCompletion(params.message);
+    console.log("ne chat")
     const newConversationId = generateRandomId(8);
     const newMessageJson = [
       {
@@ -39,7 +40,6 @@ export async function newChat(params: NewMessage) {
     });
     id = dataRef.id;
   } catch (err) {
-    console.log(err);
     if (err instanceof Error) error = { message: err.message };
   }
   console.log(error);
@@ -55,7 +55,7 @@ export async function queryToCustom(data: { inputs: string }) {
   //add try catch
   try {
     const response = await fetch(
-      "https://api-inference.huggingface.co/models/google/gemma-7b",
+      "https://api-inference.huggingface.co/models/distilbert-base-uncased-finetuned-sst-2-english",
       {
         headers: {
           Authorization: "Bearer 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",
@@ -95,7 +95,6 @@ export async function chat(params: Message) {
   let error: undefined | { message: string };
   try {
     const responseMessage = await createCompletion(params.message);
-    console.log(responseMessage, "responseMessage");
     const newConversationId = generateRandomId(8);
     const dataRef = await prisma.conversation.findUnique({
       where: {
@@ -134,7 +133,7 @@ declare global {
 const map = globalThis.ai_map ?? new Map<string, OpenAI>();
 
 async function createCompletion(message: string) {
-  const payload = { inputs: message };
+  const payload = { inputs: message ,wait_for_model:true};
   const response = await fetch(
     "https://api-inference.huggingface.co/models/google/gemma-7b",
     {
