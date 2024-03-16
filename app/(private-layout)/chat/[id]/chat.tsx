@@ -32,7 +32,7 @@ export default function Chat({ messages, id }: ChatProps) {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [optimisticMessages]);
-
+console.log(optimisticMessages);
   return (
     <div className="grow">
       <div className="flex flex-col items-start gap-12 pb-10 min-h-[75vh] sm:w-[95%]">
@@ -75,24 +75,16 @@ function ChatInput({ addMessage, id }: ConversationComponent) {
   async function handleSubmit(formData: FormData) {
     const message = formData.get("message") as string;
     if (!message) return;
-    const apiKey = localStorage.getItem("apiKey");
-    if (!apiKey) {
-      toast({
-        title: "No API key found!",
-        description: 'Please add API key from "My account" section',
-      });
-      return;
-    }
+   
     if (inputRef.current) {
       inputRef.current.value = "";
     }
     addMessage(message);
-    // const err = await chat({
-    //   apiKey,
-    //   conversationId: id,
-    //   message,
-    // });
-const err=await queryToCustom({inputs:message});
+    const err = await chat({
+      conversationId: id,
+      message,
+    });
+// const err=await queryToCustom({inputs:message});
     if (err?.message) {
       toast({
         title: err.message,
@@ -105,6 +97,7 @@ const err=await queryToCustom({inputs:message});
       action={handleSubmit}
       className="flex flex-row items-center gap-2 sm:pr-5"
     >
+
       <Input
         ref={inputRef}
         autoComplete="off"

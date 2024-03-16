@@ -10,7 +10,6 @@ import OpenAI from "openai";
 
 export type Message = {
   message: string;
-  apiKey: string;
   conversationId: string;
 };
 
@@ -22,16 +21,13 @@ export async function newChat(params: NewMessage) {
   let id: string | undefined;
   let error: undefined | { message: string };
   try {
-    const responseMessage = await createCompletion(
-      params.apiKey,
-      params.message
-    );
+    const responseMessage = await createCompletion(params.message);
     const newConversationId = generateRandomId(8);
     const newMessageJson = [
       {
         id: newConversationId,
         question: params.message,
-        answer: responseMessage.message.content,
+        answer: responseMessage,
       },
     ];
     const dataRef = await prisma.conversation.create({
@@ -43,6 +39,7 @@ export async function newChat(params: NewMessage) {
     });
     id = dataRef.id;
   } catch (err) {
+    console.log(err);
     if (err instanceof Error) error = { message: err.message };
   }
   console.log(error);
@@ -50,7 +47,7 @@ export async function newChat(params: NewMessage) {
   if (error) return error;
   redirect(`/chat/${id}`);
 }
-export async function queryToCustom(data: { inputs: string; }) {
+export async function queryToCustom(data: { inputs: string }) {
   const session = await getUser();
   if (!session?.user) redirect("/login");
   let id: string | undefined;
@@ -60,8 +57,10 @@ export async function queryToCustom(data: { inputs: string; }) {
     const response = await fetch(
       "https://api-inference.huggingface.co/models/google/gemma-7b",
       {
-        headers: { Authorization: "Bearer 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" ,
-        "Content-Type": "application/json"},
+        headers: {
+          Authorization: "Bearer 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",
+          "Content-Type": "application/json",
+        },
         method: "POST",
         body: JSON.stringify(data),
       }
@@ -95,10 +94,8 @@ export async function queryToCustom(data: { inputs: string; }) {
 export async function chat(params: Message) {
   let error: undefined | { message: string };
   try {
-    const responseMessage = await createCompletion(
-      params.apiKey,
-      params.message
-    );
+    const responseMessage = await createCompletion(params.message);
+    console.log(responseMessage, "responseMessage");
     const newConversationId = generateRandomId(8);
     const dataRef = await prisma.conversation.findUnique({
       where: {
@@ -110,7 +107,7 @@ export async function chat(params: Message) {
       {
         id: newConversationId,
         question: params.message,
-        answer: responseMessage.message.content,
+        answer: responseMessage,
       },
     ];
     await prisma.conversation.update({
@@ -136,21 +133,20 @@ declare global {
 
 const map = globalThis.ai_map ?? new Map<string, OpenAI>();
 
-async function createCompletion(apiKey: string, message: string) {
-  let ai: OpenAI;
-  if (map.has(apiKey)) {
-    ai = map.get(apiKey)!;
-  } else {
-    ai = new OpenAI({
-      apiKey,
-    });
-    map.set(apiKey, ai);
-  }
-  const chatCompletion = await ai.chat.completions.create({
-    messages: [{ role: "user", content: message }],
-    model: "gpt-3.5-turbo",
-  });
-  return chatCompletion.choices[0];
+async function createCompletion(message: string) {
+  const payload = { inputs: message };
+  const response = await fetch(
+    "https://api-inference.huggingface.co/models/google/gemma-7b",
+    {
+      headers: {
+        Authorization: "Bearer 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",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(payload),
+    }
+  );
+
+  const result = await response.json();
+  return result[0].generated_text;
 }
-
-
