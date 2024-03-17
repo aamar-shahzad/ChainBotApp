@@ -135,7 +135,7 @@ const map = globalThis.ai_map ?? new Map<string, OpenAI>();
 async function createCompletion(message: string) {
   const payload = { inputs: message ,wait_for_model:true};
   const response = await fetch(
-    `https://api-inference.huggingface.co/models/${process.env.ModelName}`,
+    `https://api-inference.huggingface.co/models/google/${process.env.ModelName}`,
     {
       headers: {
         Authorization: "Bearer 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",
@@ -147,6 +147,6 @@ async function createCompletion(message: string) {
   );
 
   const result = await response.json();
-  console.log(result)
-  return result[0].generated_text;
+  
+  return result? result[0].generated_text:"something went wrong";
 }
