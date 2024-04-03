@@ -1,5 +1,5 @@
 import ChatInput from "./input";
-
+export const maxDuration = 300 
 export default function Chat() {
   return (
     <div className="grow">
