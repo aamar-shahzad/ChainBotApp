@@ -16,4 +16,4 @@ deploy:
   github_token: $GITHUB_TOKEN
   local_dir: .next
   on:
-    branch: main
+    branch: master
