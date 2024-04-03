@@ -14,6 +14,7 @@ export type Message = {
 };
 
 export type NewMessage = Omit<Message, "conversationId">;
+const BASE_URL="https://aamar1-changedetecor.hf.space"
 
 export async function newChat(params: NewMessage) {
   const session = await getUser();
@@ -47,50 +48,7 @@ export async function newChat(params: NewMessage) {
   if (error) return error;
   redirect(`/chat/${id}`);
 }
-export async function queryToCustom(data: { inputs: string }) {
-  const session = await getUser();
-  if (!session?.user) redirect("/login");
-  let id: string | undefined;
-  let error: undefined | { message: string };
-  //add try catch
-  try {
-    const response = await fetch(
-      "https://api-inference.huggingface.co/models/distilbert-base-uncased-finetuned-sst-2-english",
-      {
-        headers: {
-          Authorization: "Bearer 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",
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(data),
-      }
-    );
-    const result = await response.json();
-    const newConversationId = generateRandomId(8);
-    const newMessageJson = [
-      {
-        id: newConversationId,
-        question: data.inputs,
-        answer: result.generated_text,
-      },
-    ];
-    const dataRef = await prisma.conversation.create({
-      data: {
-        messages: newMessageJson,
-        name: data.inputs,
-        userId: session.user.id,
-      },
-    });
-    id = dataRef.id;
-  } catch (err) {
-    console.log(err);
-    if (err instanceof Error) error = { message: err.message };
-  }
-  console.log(error);
 
-  if (error) return error;
-  redirect(`/chat/${id}`);
-}
 export async function chat(params: Message) {
   let error: undefined | { message: string };
   try {
@@ -133,20 +91,25 @@ declare global {
 const map = globalThis.ai_map ?? new Map<string, OpenAI>();
 
 async function createCompletion(message: string) {
-  const payload = { inputs: message ,wait_for_model:true};
-  const response = await fetch(
-    `https://api-inference.huggingface.co/models/${process.env.ModelName}`,
-    {
-      headers: {
-        Authorization: "Bearer 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",
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(payload),
-    }
-  );
+  const payload = { message: message };
+  console.log("payload", payload);
 
-  const result = await response.json();
-  
-  return result? result[0].generated_text:"something went wrong";
+  try {
+    const response = await fetch(`${BASE_URL}/prediction`, {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+    });
+    const data = await response.json();
+
+    const {summary}=data
+    return summary; // or do something with data
+  } catch (error) {
+    console.log("error", error);
+    return "Something went wrong";
+  }
 }
+

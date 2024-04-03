@@ -1,6 +1,6 @@
 "use client";
 
-import { chat,queryToCustom } from "@/actions/chat";
+import { chat } from "@/actions/chat";
 import Submit from "@/components/submit";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";

@@ -2,7 +2,7 @@
 
 import Submit from "@/components/submit";
 import { Input } from "@/components/ui/input";
-import { newChat,queryToCustom } from "@/actions/chat";
+import { newChat } from "@/actions/chat";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 
