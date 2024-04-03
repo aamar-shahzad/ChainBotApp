@@ -109,7 +109,7 @@ async function createCompletion(message: string) {
     return summary; // or do something with data
   } catch (error) {
     console.log("error", error);
-    return "Something went wrong";
+    return "Something went wrong try again";
   }
 }
 
