@@ -9,7 +9,7 @@ import { generateRandomId } from "@/lib/utils";
 import { JSONMessage } from "@/types";
 import { useRouter } from "next/navigation";
 import { ElementRef, useEffect, useOptimistic, useRef } from "react";
-export const maxDuration = 300 
+
 type ChatProps = {
   messages: JSONMessage[];
   id: string;
