@@ -14,8 +14,8 @@ export type Message = {
 };
 
 export type NewMessage = Omit<Message, "conversationId">;
-const BASE_URL="https://aamar1-changedetecor.hf.space"
-
+// const BASE_URL="https://aamar1-changedetecor.hf.space"
+const BASE_URL="http://127.0.0.1:8000"
 export async function newChat(params: NewMessage) {
   const session = await getUser();
   if (!session?.user) redirect("/login");
